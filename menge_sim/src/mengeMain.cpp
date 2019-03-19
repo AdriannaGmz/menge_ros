@@ -225,7 +225,7 @@ int main(int argc, char* argv[]) {
 
 
 
-	// Service to acknowledge active status. dagr
+	// Service to acknowledge active status
 	ros::ServiceServer service = nh.advertiseService("get_simulation_status", query_status);
 	ROS_INFO("Ready to provide menge simulation status");
 
