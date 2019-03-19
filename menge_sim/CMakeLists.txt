@@ -11,11 +11,48 @@ find_package(catkin REQUIRED COMPONENTS
   roslib
   geometry_msgs
   std_msgs
+  genmsg                #  for cpp msgs and srv.dagr
 )
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 #find the correct OpenMP flag
+
+
+
+
+
+
+
+
+
+
+
+## Generate services in the 'srv' folder. dagr
+add_service_files(
+  FILES
+  IsAlive.srv
+)
+
+add_service_files(DIRECTORY srv)
+
+generate_messages(    #for srvs and msgs
+  DEPENDENCIES
+  std_msgs
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ################################################
@@ -49,7 +86,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-  CATKIN_DEPENDS menge_core roscpp rospy std_msgs geometry_msgs roslib
+  CATKIN_DEPENDS menge_core roscpp rospy std_msgs geometry_msgs roslib message_runtime
 #  DEPENDS system_lib
 )
 

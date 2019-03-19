@@ -68,6 +68,12 @@ Any questions or comments should be sent to the authors {menge,geom}@cs.unc.edu
 #include <ros/ros.h>
 #include <geometry_msgs/Twist.h>
 
+
+// service to provide status. dagr
+#include "menge_sim/IsAlive.h"
+
+
+
 using namespace Menge;
 
 // Time step (gets set by the scene.xml file
@@ -97,6 +103,22 @@ void velCallback(const geometry_msgs::Twist& msg)
    ROS_INFO("I heard: y :[%f]", msg.angular.y);
    ROS_INFO("I heard: z :[%f]", msg.angular.z);
 }
+
+
+
+
+
+// Service provided to acknowledge an active menge simulation, returns True when 
+// simulation (this node) is alive/active. only answers back when simulation is active. dagr
+bool query_status(menge_sim::IsAlive::Request  &req,
+				  menge_sim::IsAlive::Response &res){
+	res.menge_status = req.menge_query;
+}
+
+
+
+
+
 
 
 /*!
@@ -200,6 +222,15 @@ int main(int argc, char* argv[]) {
 	ros::init(argc,argv,"menge_sim");
 	ros::NodeHandle nh;
 	ROS_INFO_STREAM("Hello_semaFORR");
+
+
+
+	// Service to acknowledge active status. dagr
+	ros::ServiceServer service = nh.advertiseService("get_simulation_status", query_status);
+	ROS_INFO("Ready to provide menge simulation status");
+
+
+
 	//std::string project_path;
         //nh.getParam("project", project_path);
 
