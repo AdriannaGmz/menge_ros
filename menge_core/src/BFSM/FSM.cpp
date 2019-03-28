@@ -547,42 +547,94 @@ namespace Menge {
 
 				}
 			}
-			// Compute and publish the crowd positions that is visible to the robot via laser scan
+
+
+			// // Compute and publish the crowd positions that is visible to the robot via laser scan
+			// for ( int a = 0; a < agtCount; ++a ) {
+			// 	Agents::BaseAgent * agt = this->_sim->getAgent( a );
+			// 	Vector2 agent_pos = agt->_pos;
+			// 	Vector2 agent_orient = agt->_orient;
+			// 	if(_sim->queryVisibility(agent_pos,robot_pos, 0.1) and !agt->_isExternal){
+			// 		double dx = agent_pos._x - robot_pos._x;
+			// 		double dy = agent_pos._y - robot_pos._y;
+			// 		double distance = sqrt((dx * dx) + (dy * dy));
+
+			// 		// Angle between robot orientation vector and robot-agent vector 
+			// 		//double robot_ort = atan2(robot_orient._y, robot_orient._x);
+			// 		//double robot_agent_ort = atan2(dy, dx);
+			// 		//double difference = robot_ort - robot_agent_ort;
+					
+			// 		double len_robot = sqrt(pow(robot_orient._x,2) + pow(robot_orient._y,2));
+			// 		double len_robot_agent = sqrt(pow(dx,2) + pow(dy,2));
+			// 		double dot_product=(robot_orient._x * dx) + (robot_orient._y * dy);
+					
+			// 		double difference = acos(dot_product/(len_robot*len_robot_agent));
+			// 		if(difference > 6.283){ 
+			// 			difference = difference - 6.283;
+			// 		}
+			// 		else if(difference < -6.283){
+			// 			difference = difference + 6.283;
+			// 		}
+					 
+			// 		if(distance < 25 and abs(difference) < 1.9198){
+			// 			geometry_msgs::Pose pose;
+			// 			pose.position.x = agent_pos._x;
+			// 			pose.position.y = agent_pos._y;
+			// 			pose.orientation = tf::createQuaternionMsgFromRollPitchYaw(0.0, 0.0, atan2(agt->_orient._y, agt->_orient._x));
+			// 			crowd.poses.push_back(pose);
+			// 		}
+			// 	}
+			// }
+
+
+
+
+			// // DAGR modification: compute and publish ALL crowd positions, regardless whether they are 
+			// // visible to the robot or not
 			for ( int a = 0; a < agtCount; ++a ) {
 				Agents::BaseAgent * agt = this->_sim->getAgent( a );
 				Vector2 agent_pos = agt->_pos;
-				Vector2 agent_orient = agt->_orient;
-				if(_sim->queryVisibility(agent_pos,robot_pos, 0.1) and !agt->_isExternal){
-					double dx = agent_pos._x - robot_pos._x;
-					double dy = agent_pos._y - robot_pos._y;
-					double distance = sqrt((dx * dx) + (dy * dy));
+				// Vector2 agent_orient = agt->_orient;
+				// if(_sim->queryVisibility(agent_pos,robot_pos, 0.1) and !agt->_isExternal){
+				// 	double dx = agent_pos._x - robot_pos._x;
+				// 	double dy = agent_pos._y - robot_pos._y;
+				// 	double distance = sqrt((dx * dx) + (dy * dy));
 
 					// Angle between robot orientation vector and robot-agent vector 
 					//double robot_ort = atan2(robot_orient._y, robot_orient._x);
 					//double robot_agent_ort = atan2(dy, dx);
 					//double difference = robot_ort - robot_agent_ort;
 					
-					double len_robot = sqrt(pow(robot_orient._x,2) + pow(robot_orient._y,2));
-					double len_robot_agent = sqrt(pow(dx,2) + pow(dy,2));
-					double dot_product=(robot_orient._x * dx) + (robot_orient._y * dy);
+					// double len_robot = sqrt(pow(robot_orient._x,2) + pow(robot_orient._y,2));
+					// double len_robot_agent = sqrt(pow(dx,2) + pow(dy,2));
+					// double dot_product=(robot_orient._x * dx) + (robot_orient._y * dy);
 					
-					double difference = acos(dot_product/(len_robot*len_robot_agent));
-					if(difference > 6.283){ 
-						difference = difference - 6.283;
-					}
-					else if(difference < -6.283){
-						difference = difference + 6.283;
-					}
+					// double difference = acos(dot_product/(len_robot*len_robot_agent));
+					// if(difference > 6.283){ 
+					// 	difference = difference - 6.283;
+					// }
+					// else if(difference < -6.283){
+					// 	difference = difference + 6.283;
+					// }
 					 
-					if(distance < 25 and abs(difference) < 1.9198){
+					// if(distance < 25 and abs(difference) < 1.9198){
 						geometry_msgs::Pose pose;
 						pose.position.x = agent_pos._x;
 						pose.position.y = agent_pos._y;
-						pose.orientation = tf::createQuaternionMsgFromRollPitchYaw(0.0, 0.0, atan2(agt->_orient._y, agt->_orient._x));
+						// pose.orientation = tf::createQuaternionMsgFromRollPitchYaw(0.0, 0.0, atan2(agt->_orient._y, agt->_orient._x));
 						crowd.poses.push_back(pose);
-					}
-				}
+					// }
+				// }
 			}
+
+
+
+
+
+
+
+
+
 
 			crowd.header.stamp = current_time;
 			crowd.header.frame_id = "map";
