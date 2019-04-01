@@ -388,12 +388,24 @@ namespace Menge {
 			 */
 			void addNodeHandle( ros::NodeHandle *nh){
 				_nh = nh;
+
+					// Originals
+				// _sub = _nh->subscribe("cmd_vel", 1000, &Menge::BFSM::FSM::setPrefVelFromMsg, this);
+				// _pub_crowd = _nh->advertise<geometry_msgs::PoseArray>("crowd_pose", 50);
+				// //_pub_odom = _nh->advertise<nav_msgs::Odometry>("odom", 50);
+				// _pub_pose = _nh->advertise<geometry_msgs::PoseStamped>("pose", 50);
+				// _pub_scan = _nh->advertise<sensor_msgs::LaserScan>("base_scan", 50);
+				// _pub_endpoints = _nh->advertise<geometry_msgs::PoseArray>("laser_end", 50);
+
+					// speeded up and added agents vels publication
 				_sub = _nh->subscribe("cmd_vel", 1000, &Menge::BFSM::FSM::setPrefVelFromMsg, this);
-				_pub_crowd = _nh->advertise<geometry_msgs::PoseArray>("crowd_pose", 50);
-				//_pub_odom = _nh->advertise<nav_msgs::Odometry>("odom", 50);
-				_pub_pose = _nh->advertise<geometry_msgs::PoseStamped>("pose", 50);
-				_pub_scan = _nh->advertise<sensor_msgs::LaserScan>("base_scan", 50);
-				_pub_endpoints = _nh->advertise<geometry_msgs::PoseArray>("laser_end", 50);
+				_pub_crowd = _nh->advertise<geometry_msgs::PoseArray>("crowd_pose", 1000);
+				//_pub_odom = _nh->advertise<nav_msgs::Odometry>("odom", 1000);
+				_pub_pose = _nh->advertise<geometry_msgs::PoseStamped>("pose", 1000);
+				_pub_scan = _nh->advertise<sensor_msgs::LaserScan>("base_scan", 1000);
+				_pub_endpoints = _nh->advertise<geometry_msgs::PoseArray>("laser_end", 1000);
+				_pub_crowd_vels = _nh->advertise<geometry_msgs::PoseArray>("crowd_vels", 1000);
+
 			}
 			/*!
 			 *	@brief		return ROS node handle
@@ -451,6 +463,7 @@ namespace Menge {
 			ros::Publisher _pub_odom;
 			ros::Publisher _pub_scan;
 			ros::Publisher _pub_endpoints;
+			ros::Publisher _pub_crowd_vels;
 			Agents::PrefVelocity prefVelMsg;
 
 		};

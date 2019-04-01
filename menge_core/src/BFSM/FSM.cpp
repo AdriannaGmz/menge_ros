@@ -50,6 +50,10 @@ Any questions or comments should be sent to the authors {menge,geom}@cs.unc.edu
 #include "BaseAgent.h"
 #include "SimulatorInterface.h"
 
+// To publish newVel for every agent
+#include <geometry_msgs/Twist.h>
+
+
 namespace Menge {
 
 	namespace BFSM {
@@ -181,6 +185,27 @@ namespace Menge {
 
 			//agent will now have a set preferred velocity method
 			agent->setPreferredVelocity(newVel);
+
+
+
+// 			// ***********HERE WE PUBLISH THE NEWVEL
+
+
+
+// void velCallback(const geometry_msgs::Twist& msg)
+// {
+//    ROS_INFO("I heard: x :[%f]", msg.linear.x);
+//    ROS_INFO("I heard: y :[%f]", msg.linear.y);
+//    ROS_INFO("I heard: z :[%f]", msg.linear.z);
+//    ROS_INFO("I heard: x :[%f]", msg.angular.x);
+//    ROS_INFO("I heard: y :[%f]", msg.angular.y);
+//    ROS_INFO("I heard: z :[%f]", msg.angular.z);
+// }
+
+
+
+
+
 		}
 
 		void FSM::transformToEndpoints(Vector2 pos, float angle, sensor_msgs::LaserScan ls){
@@ -481,6 +506,7 @@ namespace Menge {
 			ros::Time current_time;
   			current_time = ros::Time::now();
 			geometry_msgs::PoseArray crowd;
+			geometry_msgs::PoseArray crowd_vels;
 			Vector2 robot_pos;
 			Vector2 robot_orient;
 			float robot_angle;
@@ -595,7 +621,12 @@ namespace Menge {
 				Agents::BaseAgent * agt = this->_sim->getAgent( a );
 				Vector2 agent_pos = agt->_pos;
 				// Vector2 agent_orient = agt->_orient;
-				// if(_sim->queryVisibility(agent_pos,robot_pos, 0.1) and !agt->_isExternal){
+				Vector2 agent_vel = agt->_vel;
+
+				// if( !agt->_isExternal){ // Only crowd members (not robot)
+								// agt->_isExternal  = True    : robot
+								// 				  	 = false   : crowd
+
 				// 	double dx = agent_pos._x - robot_pos._x;
 				// 	double dy = agent_pos._y - robot_pos._y;
 				// 	double distance = sqrt((dx * dx) + (dy * dy));
@@ -623,6 +654,15 @@ namespace Menge {
 						pose.position.y = agent_pos._y;
 						// pose.orientation = tf::createQuaternionMsgFromRollPitchYaw(0.0, 0.0, atan2(agt->_orient._y, agt->_orient._x));
 						crowd.poses.push_back(pose);
+
+						geometry_msgs::Pose vels;
+						vels.position.x = agent_vel._x;
+						vels.position.y = agent_vel._y;
+						// vels.orientation = tf::createQuaternionMsgFromRollPitchYaw(0.0, 0.0, atan2(agt->_orient._y, agt->_orient._x));
+						crowd_vels.poses.push_back(vels);
+
+
+
 					// }
 				// }
 			}
@@ -639,6 +679,10 @@ namespace Menge {
 			crowd.header.stamp = current_time;
 			crowd.header.frame_id = "map";
 			_pub_crowd.publish(crowd);
+
+			crowd_vels.header.stamp = current_time;
+			crowd_vels.header.frame_id = "map_vels";
+			_pub_crowd_vels.publish(crowd_vels);
 
 			if ( exceptionCount > 0 ) {
 				throw FSMFatalException();

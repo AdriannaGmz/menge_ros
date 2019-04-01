@@ -1,0 +1,9 @@
+<launch>
+<!-- Menge simulation node, from examples folder in catkin_ws/examples-->
+
+<node pkg="menge_sim" name="menge_simulator" type="menge_sim" output="screen" required="true" args="--project /home/adg/catkin_ws_adg/examples/core/carla_roundabout.xml"  >
+  </node>
+
+
+
+</launch>
