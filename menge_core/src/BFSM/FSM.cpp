@@ -684,6 +684,14 @@ namespace Menge {
 			crowd_vels.header.frame_id = "map_vels";
 			_pub_crowd_vels.publish(crowd_vels);
 
+
+			std_msgs::Float64 time_step_msg;
+			// time_step_msg.data = TIME_STEP;
+			time_step_msg.data = SIM_TIME_STEP;
+			_pub_time_step.publish(time_step_msg);			
+
+
+
 			if ( exceptionCount > 0 ) {
 				throw FSMFatalException();
 			}

@@ -64,6 +64,7 @@ Any questions or comments should be sent to the authors {menge,geom}@cs.unc.edu
 #include <tf/transform_broadcaster.h>
 #include <nav_msgs/Odometry.h>
 #include <sensor_msgs/LaserScan.h>
+#include <std_msgs/Float64.h>
 
 #include <map>
 #include <iostream>
@@ -405,6 +406,8 @@ namespace Menge {
 				_pub_scan = _nh->advertise<sensor_msgs::LaserScan>("base_scan", 1000);
 				_pub_endpoints = _nh->advertise<geometry_msgs::PoseArray>("laser_end", 1000);
 				_pub_crowd_vels = _nh->advertise<geometry_msgs::PoseArray>("crowd_vels", 1000);
+				_pub_time_step = nh->advertise<std_msgs::Float64>("time_step", 1000);
+
 
 			}
 			/*!
@@ -464,6 +467,8 @@ namespace Menge {
 			ros::Publisher _pub_scan;
 			ros::Publisher _pub_endpoints;
 			ros::Publisher _pub_crowd_vels;
+			ros::Publisher _pub_time_step;
+
 			Agents::PrefVelocity prefVelMsg;
 
 		};
